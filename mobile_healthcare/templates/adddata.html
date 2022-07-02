@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+	<title>Form-v5 by Colorlib</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="static/registration/css/roboto-font.css">
+	<link rel="stylesheet" type="text/css" href="static/registration/fonts/font-awesome-5/css/fontawesome-all.min.css">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="static/registration/css/style.css"/>
+        </head>
+        <body class="form-v5">
+            <div class="page-content">
+                <div class="form-v5-content">
+                    <form class="form-detail" action="{% url 'view' %}" method="post">
+                        {% csrf_token %}
+                    
+                        <h2>Upload Data</h2>
+            
+                        <div class="form-row">
+                            <label for="name">Name:</label>
+                            <input type="text" name="name" required> 
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        
+                        
+                        <div class="form-row">
+                            <label for="name">Age:</label>
+                            <input type="text" name="age" required> 
+                            <i class="fas fa-lock"></i>
+                        </div>
+
+                        
+                        <div class="form-row">
+                            <label for="name">Place:</label>
+                            <input type="text" name="place" required> 
+                            <i class="fas fa-lock"></i>
+                        </div>
+
+                       
+                        <div class="form-row">
+                            <label for="name"> Document Upload:</label>
+                            <input type="file" name="files[]" id="files" required> 
+                            <input type="hidden" name="url" id="url" required>
+                            <button type="button" onclick="uploadimage()">Upload</button><br>
+                            <input type="submit" value="ADD"> 
+                            <i class="fas fa-lock"></i>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+        </html>
+           
+                
+              
+
+
+
+
+
+
+
+
+
+
+<!-- 
+    <form action="{% url 'view' %}" method="post">
+        {% csrf_token %}
+        Name:
+        <input type="text" name="name" required><br>
+        Age:
+        <input type="text" name="age" required><br>
+        Place:
+        <input type="text" name="place" required><br>
+        Document Upload:
+        <input type="file" name="files[]" id="files">
+        <input type="hidden" name="url" id="url"><br>
+        <button type="button" onclick="uploadimage()">Upload</button><br>
+        <input type="submit" value="ADD">
+
+    </form>   -->
+</body>
+<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+<script>
+config = {
+  "apiKey": "AIzaSyDKw0CNoKsRbXIPNV_wpweT6LVnepy7GSo",
+  "authDomain": "filestorage-212dd.firebaseapp.com",
+  "databaseURL": "https://filestorage-212dd-default-rtdb.firebaseio.com",
+  "projectId": "filestorage-212dd",
+  "storageBucket": "filestorage-212dd.appspot.com",
+  "messagingSenderId": "358922091610",
+  "appId": "1:358922091610:web:c39d22f29d4a40aa8b2c63",
+  "measurementId": "G-6BZ7ZWVERB"
+}
+firebase.initializeApp(config);
+
+function uploadimage(){
+    var storage = firebase.storage();
+    var file = document.getElementById('files').files[0];
+
+    var storageRef = storage.ref();
+    var thisref = storageRef.child(file.name).put(file);
+
+    thisref.on('state_changed', function(snapshot){
+        console.log("File upload success");
+    },
+    function (error){
+
+    },
+    
+    function(){
+        var downloadURL = thisref.snapshot.downloadURL;
+        console.log("got url");
+        document.getElementById("url").value = downloadURL;
+        alert("file upload successfully")
+    });
+}
+
+</script>
+</html>
